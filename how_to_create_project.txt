@@ -116,6 +116,7 @@ File>Settings>Tools>Terminal>Activate virtualenv (check/uncheck)
 environment first.
 venv_name\Scripts\activate
 ===============================================================================
+DEPLOYMENT TO HEROKU.
 With a new database created and the settings.py file set up to connect to it,
 we will need to connect our new database to Heroku.
 
@@ -125,5 +126,34 @@ value, copy in your database URL from ElephantSQL (see above line), no need to
 add quotation marks.
 SECRET_KEY containing your secret key
 
-2. You must also add another Config Var in Heroku's Settings:
-PORT - 8000
+2. When deploying a Django project to Heroku, you will typically need to use a
+web server to serve your application. Gunicorn (short for "Green Unicorn") is a
+commonly used web server that is recommended for deploying Django applications
+on Heroku.
+Heroku's platform expects the application to be run using a web server that can
+handle incoming HTTP requests. Gunicorn is one of the most popular choices
+because it is a production-ready WSGI server (Web Server Gateway Interface)
+that can handle serving Django applications efficiently and securely.
+
+Install Gunicorn: Add Gunicorn to your project's requirements.txt file and
+install it using pip
+
+3. Procfile: Create a file named Procfile (without any file extension) in your
+project's root directory. The Procfile tells Heroku how to run your application.
+Inside the Procfile, add the following line:
+web: gunicorn django_todo.wsgi:application
+
+4. Add to ALLOWED_HOSTS of settings.py:
+"127.0.0.1", "django-todo-app-gaysha-repeat-8ee4d1028769.herokuapp.com", where
+the second item is generated from Heroku > settings > Domains of the current
+project
+
+5. In case of any errors:
+
+- login to heroku terminal using command:
+heroku login -i
+
+- use API key from Account settings (in case of Multi-Factor Authentication) as
+a password
+
+- heroku logs --app=django-todo-app-gaysha-repeat
