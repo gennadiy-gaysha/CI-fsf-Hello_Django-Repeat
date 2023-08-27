@@ -1,4 +1,5 @@
-1. Create project directory and move to it.
+1. Create project directory and move to it in PyCharm. Delete default main.py
+file after openning in PyCharm.
 
 2. Before creating a Django project, it's a good practice to create a virtual
 environment for it. This isolates your project's dependencies from the system-wide
@@ -8,23 +9,30 @@ python -m venv venv_name
 3. Activate the virtual environment (on Windows):
 venv_name\Scripts\activate
 
-4. While your virtual environment is active, install Django using pip. You don't
-need to install Django globally on your system.
-pip install Django
+4. In PyCharm > File > Settings > Project_name > Python Interpreter > Add
+Interpreter > C:\Users\Геннадий Гайша\Google Диск\Code_Institute\CI_Modules\
+CI-fsf-Hello_Django-Repeat\venv
 
-5. Once you're in the desired directory, you can create your Django project using
-the django-admin startproject command followed by the project name. For example,
-if you want to name your project movie_proj, you can run:
+5. Run current file (dropdown menu) > Edit Configuration > Script Path:
+path to project's <manage.py> file/Parameters: runserver/Python interpreter -
+from p. 4 (Name > add your_app_name)
+
+6. While your virtual environment is active, install Django using pip. You
+don't need to install Django globally on your system. pip install django (or
+'django<4')
+
+7. Once you're in the desired directory, you can create your Django project
+using the django-admin startproject command followed by the project name. For
+example, if you want to name your project movie_proj, you can run:
 django-admin startproject movie_proj .
 !!! The . at the end indicates that the project should be created in the current
 directory. This will create a movie_proj directory with the initial project files.
 
-6. If you need additional packages for your project, you can install them while your
+8. If you need additional packages for your project, you can install them
+while your
 virtual environment is active.
 pip install package_name_1 package_name_2 package_name_3 package_name_4
 
-6`. After installing all packages create requirements.txt file
-pip freeze > requirements.txt
 ===============================================================================
 To hide sensitive data, such as the Django secret key, in a Django project using
 the dotenv library, you can follow these steps:
@@ -33,18 +41,30 @@ the dotenv library, you can follow these steps:
 pip install python-dotenv
 pip install dj_database_url==0.5.0 psycopg2 (we use psycopg2 to connect to
 PostgreSQL)
+
+- Create third party database (elephantsql.com)
+
 - Create a .env File: Create a file named .env in the root directory of your
 Django project. This is where you'll store your sensitive data.
-- Place your SECRET_KEY and DATABASE_URL value in it:
+
+- Place your SECRET_KEY (from settings.py) and DATABASE_URL value (URL from
+your remote third party database - elephantsql.com) in it:
 SECRET_KEY=mysecretkeyhere
-DATABASE_URL=mydatabaseurl
+DATABASE_URL=myelephantsqlurl (!!! in DATABASE_URL in .env file insert port
+number after <...elephantsql.com:5432/...)
+
 - Access Environment Variables in Settings: Open your Django project's settings.py
 file and import the dotenv library:
 import dotenv
+dotenv.load_dotenv()
 import dj_database_url (for remote database)
+
 - Load Environment Variables: At the top of your settings.py file, load the
 environment variables from the .env file:
+import dotenv
 dotenv.load_dotenv()
+import dj_database_url
+
 - Access Environment Variables: Use the os.environ dictionary to access the
 environment variables from the .env file. For example, to access the secret key:
 SECRET_KEY = os.environ.get('SECRET_KEY')
@@ -63,30 +83,47 @@ db.sqlite3
 -Use .env in Production: In production environments, you can manually set environment
 variables using the server's configuration or a service like Heroku's config vars.
 ===============================================================================
-6``. Create your app:
+
+9. After installing all packages create requirements.txt file
+pip freeze > requirements.txt
+
+10. Create your app:
 python manage.py startapp movie_app
 
-6```. Add newly created app to the end of INSTALLED_APPS variable in settings
+11. Add newly created app to the end of INSTALLED_APPS variable in settings
 .py file:
 INSTALLED_APPS = [
 ...,
 'todo'
 ]
 
-6````. To ensure that the database schema is up to date and ready to
+12. To ensure that the database schema is up-to-date and ready to
 accommodate any models you define in the future:
 python manage.py migrate
 
-7. While the virtual environment is active, you can work on your Django project, run
+13. While the virtual environment is active, you can work on your Django
+project, run
 migrations, start the development server, etc.
 
-8. When you're done working on your project, deactivate the virtual environment.
+14. When you're done working on your project, deactivate the virtual
+environment.
 deactivate
 !!! PyCharm provides an option to automatically activate the virtual environment
 associated with a project whenever you open a terminal within the IDE.
 File>Settings>Tools>Terminal>Activate virtualenv (check/uncheck)
 
-9. Whenever you want to continue working on your project, activate the virtual
+15. Whenever you want to continue working on your project, activate the virtual
 environment first.
 venv_name\Scripts\activate
 ===============================================================================
+With a new database created and the settings.py file set up to connect to it,
+we will need to connect our new database to Heroku.
+
+1. Add two config vars:
+DATABASE_URL (from .env file, i. e. with inserted port number), and for the
+value, copy in your database URL from ElephantSQL (see above line), no need to
+add quotation marks.
+SECRET_KEY containing your secret key
+
+2. You must also add another Config Var in Heroku's Settings:
+PORT - 8000
