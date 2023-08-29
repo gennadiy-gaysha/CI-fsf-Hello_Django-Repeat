@@ -11,14 +11,15 @@
     <h1>Add new item:</h1>
     <form method="POST" action="add">
         {% csrf_token %}
-        <div>
-            <label for="id_name">Name:</label>
-            <input type="text" id="id_name" name="item_name">
-        </div>
-        <div>
-            <label for="id_done">Done:</label>
-            <input type="checkbox" id="id_done" name="done">
-        </div>
+        {{ form.as_p }}
+<!--        <div>-->
+<!--            <label for="id_name">Name:</label>-->
+<!--            <input type="text" id="id_name" name="item_name">-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <label for="id_done">Done:</label>-->
+<!--            <input type="checkbox" id="id_done" name="done">-->
+<!--        </div>-->
         <div>
             <p>
                 <button type="submit">Add Item</button>

@@ -2,6 +2,8 @@ from django.db import models
 
 
 # Create your models here.
+
+
 class Item(models.Model):
     # The null equals false attribute here prevents items from being created without a name
     # programmatically
@@ -11,6 +13,17 @@ class Item(models.Model):
     # admin panel.
     name = models.CharField(max_length=50, null=False, blank=False)
     status = models.BooleanField(null=False, blank=False)
+
+    priority_choices = [
+        ('low', 'Low'),
+        ('medium', 'Medium'),
+        ('high', 'High'),
+    ]
+    priority = models.CharField(
+        max_length=10,
+        choices=priority_choices,
+        default='medium',  # Default value if not specified
+    )
 
     def __str__(self):
         return f'{self.name} - {self.status}'
